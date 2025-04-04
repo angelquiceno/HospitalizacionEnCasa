@@ -1,0 +1,7 @@
+from .FamiliarSerializer import ClaseFamiliarSerializer
+from .PacienteSerializer import ClasePacienteSerializer
+from .PersonalSaludSerializer import ClasePersonalSaludSerializer
+from .userSerializer import ClaseUsarioSerializer
+from .HistoriaClinicaSerializer import ClaseHistoriaClinicaSerializer
+from .SignosVitalesSerliazer import ClaseSignosVitalesSerializer
+
