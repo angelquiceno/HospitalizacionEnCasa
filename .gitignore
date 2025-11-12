@@ -76,3 +76,6 @@ htmlcov/
 
 # Documentación personal (fuera del repo)
 GUIA_SUSTENTACION*.md
+
+# Kiro IDE
+.kiro/
