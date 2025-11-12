@@ -73,3 +73,6 @@ htmlcov/
 *.seed
 *.pid.lock
 .cache
+
+# Documentación personal (fuera del repo)
+GUIA_SUSTENTACION*.md
