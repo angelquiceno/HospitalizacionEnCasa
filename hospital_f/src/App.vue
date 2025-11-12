@@ -1,59 +1,83 @@
 <template>
   <div id="app" class="app">
     <div class="header">
-      <h1>Hospital en casa G2</h1>
+      <h1>Hospital en Casa G2</h1>
       <nav>
-        <button v-if="is_auth">Inicio</button>
-        <button v-if="is_auth">Cuenta</button>
-        <button v-if="is_auth">Cerrar Sesión</button>
-        <button v-if="!is_auth" v-on:click="loadLogIn">Iniciar Sesión</button>
-        <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
+        <button v-if="is_auth" @click="goToDashboard">Inicio</button>
+        <button v-if="is_auth" @click="logout">Cerrar Sesión</button>
+        <button v-if="!is_auth" @click="loadLogIn">Iniciar Sesión</button>
+        <button v-if="!is_auth" @click="loadSignUp">Registrarse</button>
       </nav>
     </div>
     <div class="main-component">
       <router-view
-        v-on:completedLogIn="completedLogIn"
-        v-on:completedSignUp="completedSignUp"
-      >
-      </router-view>
+        @completedLogIn="completedLogIn"
+        @completedSignUp="completedSignUp"
+      />
     </div>
     <div class="footer">
-      <h2>Hospital en casa G2 2022</h2>
+      <h2>Hospital en Casa G2 2025</h2>
     </div>
   </div>
 </template>
 
 <script>
+import authService from "./services/auth.service";
+
 export default {
   name: "App",
-  data: function () {
+  data() {
     return {
       is_auth: false,
     };
   },
 
-  components: {},
-
-  methods: {
-    verifyAuth: function () {
-      if (this.is_auth == false) this.$router.push({ name: "logIn" });
+  computed: {
+    isAuthRoute() {
+      return this.$route.name === "login" || this.$route.name === "signup";
     },
-
-    loadLogIn: function () {
-      this.$router.push({ name: "logIn" });
-    },
-
-    loadSignUp: function () {
-      this.$router.push({ name: "signUp" });
-    },
-
-    completedLogIn: function (data) {},
-
-    completedSignUp: function (data) {},
   },
 
-  created: function () {
+  methods: {
+    verifyAuth() {
+      this.is_auth = authService.isAuthenticated();
+    },
+
+    loadLogIn() {
+      this.$router.push({ name: "login" });
+    },
+
+    loadSignUp() {
+      this.$router.push({ name: "signup" });
+    },
+
+    goToDashboard() {
+      this.$router.push({ name: "dashboard" });
+    },
+
+    logout() {
+      authService.logout();
+      this.is_auth = false;
+      this.$router.push({ name: "login" });
+    },
+
+    completedLogIn(data) {
+      this.is_auth = true;
+    },
+
+    completedSignUp(data) {
+      this.is_auth = true;
+    },
+  },
+
+  created() {
     this.verifyAuth();
+  },
+
+  watch: {
+    $route() {
+      this.verifyAuth();
+    },
   },
 };
 </script>
